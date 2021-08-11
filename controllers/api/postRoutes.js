@@ -23,7 +23,6 @@ router.get('/:id', async (req, res) => {
       },
       raw: true,
     });
-
     if (commentData) {
       res.render('posts', {
         post: post,
@@ -59,13 +58,13 @@ router.get('/dashboard/postupdate/:id', withAuth, async (req, res) => {
       where: {
         id: req.params.id
       }
-    })
+    });
     const currentpost = postData.get({ plain: true });
     res.render('postupdate', { currentpost, loggedIn: req.session.logged_in })
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
-})
+});
 
 module.exports = router;

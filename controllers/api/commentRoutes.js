@@ -10,17 +10,16 @@ router.get('/:id', withAuth, async (req, res) => {
             where: {
                 id: req.params.id
             }
-        })
+        });
         const currentpost = postData.get({ plain: true });
-        res.render('comment', {post:currentpost, loggedIn: req.session.logged_in});
+        res.render({post:currentpost, loggedIn: req.session.logged_in});
     } catch (err) {
         res.status(500).json(err);
     }
-})
+});
 
 //entering a new comment on a particular post by id
 router.post('/:id', withAuth, async (req, res) => {
-    console.log('new comment hit')
     console.log(req.body)
     try {
         const newcomment = await comment.create({
@@ -33,6 +32,6 @@ router.post('/:id', withAuth, async (req, res) => {
     } catch (err) {
         res.status(400).json(err);
     }
-})
+});
 
 module.exports = router;

@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3001;
 const hbs = exphbs.create({ helpers });
 
 const sess = {
-  secret: 'ba7d023d-19cf-432b-bfd7-6c2609ca2a5d', //used GUID genererator 
+  secret: process.env.SECRET,
   cookie: {
         // After 15 min the session willautomatically expire
         expires: 15 * 60 * 1000
