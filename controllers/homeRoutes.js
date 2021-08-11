@@ -1,12 +1,12 @@
 const router = require('express').Router();
 
-const { user, post, comment } = require('../models');
+const { Post, User, Comment } = require('../models/');
 const withAuth = require('../utils/auth');
 
 //all info on home page/ landing page
 router.get('/', async (req, res) => {
   try {
-    post.findAll({
+    Post.findAll({
       include: [
         {
           model: user,
@@ -24,12 +24,12 @@ router.get('/', async (req, res) => {
 
 //all posts to the dashboard page
 router.get('/dashboard', withAuth, async (req, res) =>{
-  const postData = await post.findAll({
+  const postData = await Post.findAll({
     where: {
       user_id: req.session.user_id
     },
     include: {
-      model: user,
+      model: User,
       attributes: ['id', 'username', 'email']
     }
   })
@@ -40,10 +40,10 @@ router.get('/dashboard', withAuth, async (req, res) =>{
 
 router.get('/dashboard/post/:id', withAuth, async (req, res) => {
   try{
-    const postData_db = await post.findByPk(req.params.id,{
+    const postData_db = await Post.findByPk(req.params.id,{
       include: [
         {
-        model: user, 
+        model: User, 
         attributes: ['id', 'username', 'email']
         },
       ],
@@ -51,7 +51,7 @@ router.get('/dashboard/post/:id', withAuth, async (req, res) => {
     const post = postData_db.get({ plain:true });
     console.log(post);
 
-    const commentData = await comment.findAll({
+    const commentData = await Comment.findAll({
       where: {
         post_id: req.params.id,
       }
@@ -77,22 +77,22 @@ router.get('/dashboard/post/:id', withAuth, async (req, res) => {
 router.delete('/dashboard/post/:id', withAuth, async (req, res) => {
   console.log(req.params.id)
   try {
-    const deletePost = await post.destroy({
+    const deletePost = await Post.destroy({
       where: {
         id: req.params.id,
       },
     });
 
-    const postData = await post.findAll({
+    const postData = await Post.findAll({
       where: {
         user_id: req.session.user_id
       },
       include: {
-        model: user,
+        model: User,
         attributes: ['id','username', 'email']
       }
     })
-    const posts = postData.map((post) => post.get({ plain: true }))
+    const posts = postData.map((post) => Post.get({ plain: true }))
     res.render('dashboard', {
       loggedIn: req.session.logged_in,
       posts,
@@ -105,7 +105,7 @@ router.delete('/dashboard/post/:id', withAuth, async (req, res) => {
 
 router.put('/dashboard/post/:id', withAuth, async (req, res) => {
   try {
-    const postUpdate = await post.update({
+    const postUpdate = await Post.update({
       post_title: req.body.title,
       post_content: req.body.content,
     },      
@@ -115,7 +115,7 @@ router.put('/dashboard/post/:id', withAuth, async (req, res) => {
       }
     })
 
-    const postData = await post.findAll({
+    const postData = await Post.findAll({
       where: {
         user_id: req.session.user_id
       },
@@ -124,7 +124,7 @@ router.put('/dashboard/post/:id', withAuth, async (req, res) => {
         attributes: ['id', 'username', 'email']
       }
     })
-    const posts = postData.map((post) => post.get({ plain: true }))
+    const posts = postData.map((post) => Post.get({ plain: true }))
     res.render('dashboard', {
       loggedIn: req.session.logged_in,
       posts,

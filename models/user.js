@@ -2,13 +2,13 @@ const { Model, DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
-class user extends Model {
+class User extends Model {
   checkPassword(loginPw) {
     return bcrypt.compareSync(loginPw, this.password);
   }
 }
 
-user.init(
+User.init(
   //create id for columns
   {
     id: {
@@ -33,8 +33,7 @@ user.init(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        min: [5],
-        max: [20]
+        len: [5]
       },
     },
   },
@@ -53,8 +52,8 @@ user.init(
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: 'user',
+    modelName: 'User',
   }
 );
 
-module.exports = user;
+module.exports = User;

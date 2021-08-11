@@ -1,4 +1,4 @@
-const { post, user, comment } = require('../../models');
+const { Post, User, Comment } = require('../../models');
 const withAuth = require('../../utils/auth');
 const router = require('express').Router();
 
@@ -6,7 +6,7 @@ const router = require('express').Router();
 router.get('/:id', async (req, res) => {
   console.log(req.session);
   try {
-    const dbpostData = await post.findByPk(req.params.id, {
+    const dbpostData = await Post.findByPk(req.params.id, {
       include: [
         {
           model: user,
@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
     const post = dbpostData.get({ plain: true });
     console.log(post);
 
-    const commentData = await comment.findAll({
+    const commentData = await Comment.findAll({
       where: {
         post_id: req.params.id,
       },
@@ -47,14 +47,14 @@ router.post('/create', async function (req, res) {
     post_content: req.body.post_content,
     user_id: req.session.user_id
   }
-  const created = await post.create(newpost)
+  const created = await Post.create(newpost)
   res.json(created)
 });
 
 //update the post by id
 router.get('/dashboard/postupdate/:id', withAuth, async (req, res) => {
   try {
-    const postData = await post.findOne({
+    const postData = await Post.findOne({
       where: {
         id: req.params.id
       }

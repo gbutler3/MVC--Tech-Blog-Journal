@@ -1,4 +1,4 @@
-const { post, user, comment } = require('../../models');
+const { Post, User, Comment } = require('../../models');
 const router = require('express').Router();
 const withAuth = require('../../utils/auth');
 
@@ -6,7 +6,7 @@ const withAuth = require('../../utils/auth');
 router.get('/:id', withAuth, async (req, res) => {
     console.log(req.params.id)
     try {
-        const postData = await post.findOne({
+        const postData = await Post.findOne({
             where: {
                 id: req.params.id
             }
@@ -22,7 +22,7 @@ router.get('/:id', withAuth, async (req, res) => {
 router.post('/:id', withAuth, async (req, res) => {
     console.log(req.body)
     try {
-        const newcomment = await comment.create({
+        const newcomment = await Comment.create({
             ...req.body,
             user_id: req.session.user_id,
             post_id: req.params.id,
