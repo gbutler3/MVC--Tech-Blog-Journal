@@ -3,24 +3,26 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MVC Tech Blog</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
   <div class="flex-column justify-space-around">
     <header class="display-flex justify-space-between align-center p-2">
-      <h1>
-        <p href="/">Tech Blog</p>
-      </h1>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <h1 class= "align-center">
+          <p href="/">Tech Blog</p>
+        </h1>
+         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <!-- Conditionally render login or logout links -->
         {{#if logged_in}}
         <a href="/userprofile">profile</a> 
         <button class="no-button" id="logout">logout</button>
         {{else}}
-        <a href="/login">login</a>
+        <a href="/">login</a>
         {{/if}}
           </div>
       </nav>
@@ -35,4 +37,7 @@
   <script src="/"></script>
   {{/if}}
 </body>
+<footer>
+
+</footer>
 </html>
